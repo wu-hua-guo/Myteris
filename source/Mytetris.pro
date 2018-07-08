@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += widgets
 
 TARGET = Mytetris
 TEMPLATE = app
@@ -14,11 +14,15 @@ TEMPLATE = app
 
 SOURCES += \
     main.cpp \
-    tetriswindow.cpp
+    tetriswindow.cpp \
+    tetrixboard.cpp \
+    tetrixpiece.cpp
 
 
 HEADERS  += \
-    tetriswindow.h
+    tetriswindow.h \
+    tetrixboard.h \
+    tetrixpiece.h
 
 
 DISTFILES +=

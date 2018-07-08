@@ -1,11 +1,71 @@
 #include "tetriswindow.h"
+#include "tetrixboard.h"
+#include <QLabel>
+#include <QLCDNumber>
+//#include "tetrixboard.h"
 
 TetrisWindow::TetrisWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QWidget(parent)
 {
+
+    TetrixBoard *board = new TetrixBoard();
+
+    nextPieceLabel = new QLabel;
+    nextPieceLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
+    nextPieceLabel->setAlignment(Qt::AlignCenter);
+
+    // !init LCDNumber
+    scoreLcd = new QLCDNumber(5);
+    scoreLcd->setSegmentStyle(QLCDNumber::Filled);
+    levelLcd = new QLCDNumber(2);
+    levelLcd->setSegmentStyle(QLCDNumber::Filled);
+    linesLcd = new QLCDNumber(2);
+    linesLcd->setSegmentStyle(QLCDNumber::Filled);
+    // !init button
+    startButton = new QPushButton(tr("&开始"));
+    startButton->setFocusPolicy(Qt::NoFocus);
+    quitButton = new QPushButton(tr("&退出"));
+    quitButton->setFocusPolicy(Qt::NoFocus);
+    pauseButton = new QPushButton(tr("&暂停"));
+    pauseButton->setFocusPolicy(Qt::NoFocus);
+
+    connect(startButton,SIGNAL(clicked(bool)),board,SLOT(start()));
+    connect(quitButton,SIGNAL(clicked(bool)),qApp,SLOT(quit()));
+    connect(pauseButton,SIGNAL(clicked(bool)),board,SLOT(pause()));
+
+    QGridLayout *layout= new QGridLayout;
+    layout->addWidget(board,0,1,6,1);
+    layout->addWidget(nextPieceLabel,1,0);
+    // ! add label
+    layout->addWidget(createLabel(tr("下一个方块")),0,0);
+    layout->addWidget(createLabel(tr("等级")),2,0);
+    layout->addWidget(createLabel(tr("分数")),0,2);
+    layout->addWidget(createLabel(tr("消除行数")),2,2);
+    layout->setColumnStretch(0,2);
+    layout->setColumnStretch(1,8);
+    layout->setColumnStretch(2,2);
+    // ! add lcd
+    layout->addWidget(scoreLcd,1,2);
+    layout->addWidget(levelLcd,3,0);
+    layout->addWidget(linesLcd,3,2);
+    // ! add button
+    layout->addWidget(startButton,4,0);
+    layout->addWidget(quitButton,4,2);
+    layout->addWidget(pauseButton,5,2);
+
+    this->setLayout(layout);
+    this->setWindowTitle(tr("俄罗斯方块游戏"));
+    this->resize(550,370);
 }
 
 TetrisWindow::~TetrisWindow()
 {
 
+}
+
+QLabel *TetrisWindow::createLabel(const QString &text)
+{
+    QLabel *lbl = new QLabel(text);
+    lbl->setAlignment(Qt::AlignHCenter|Qt::AlignBottom);
+    return lbl;
 }
