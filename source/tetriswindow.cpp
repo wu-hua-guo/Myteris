@@ -19,6 +19,7 @@ TetrisWindow::TetrisWindow(QWidget *parent)
     // !init LCDNumber
     scoreLcd = new QLCDNumber(5);
     scoreLcd->setSegmentStyle(QLCDNumber::Filled);
+
     levelLcd = new QLCDNumber(2);
     levelLcd->setSegmentStyle(QLCDNumber::Filled);
     linesLcd = new QLCDNumber(2);
@@ -48,9 +49,9 @@ TetrisWindow::TetrisWindow(QWidget *parent)
     layout->addWidget(createLabel(tr("等级")),2,0);
     layout->addWidget(createLabel(tr("分数")),0,2);
     layout->addWidget(createLabel(tr("消除行数")),2,2);
-    layout->setColumnStretch(0,2);
-    layout->setColumnStretch(1,8);
-    layout->setColumnStretch(2,2);
+//    layout->setColumnStretch(0,2);
+//    layout->setColumnStretch(1,8);
+//    layout->setColumnStretch(2,2);
     // ! add lcd
     layout->addWidget(scoreLcd,1,2);
     layout->addWidget(levelLcd,3,0);
@@ -62,12 +63,23 @@ TetrisWindow::TetrisWindow(QWidget *parent)
 
     this->setLayout(layout);
     this->setWindowTitle(tr("俄罗斯方块游戏"));
-    this->resize(550,370);
+    //this->resize(400,370);
+
+    board->resize(board->BoardWidth*15+2,board->BoardHeight*15+2);
+
+    qDebug()<<"1";
+    qDebug()<<this->size();
+
 }
 
 TetrisWindow::~TetrisWindow()
 {
 
+}
+// 大小改变之后，固定大小
+void TetrisWindow::resizeEvent(QResizeEvent *)
+{
+    setFixedSize(this->size());
 }
 
 QLabel *TetrisWindow::createLabel(const QString &text)

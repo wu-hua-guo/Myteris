@@ -24,6 +24,8 @@ class TetrisWindow : public QWidget
 public:
     TetrisWindow(QWidget *parent = 0);
     ~TetrisWindow();
+public slots:
+     void resizeEvent(QResizeEvent *);//界面大小改变事件
 private:
     QLabel *createLabel(const QString &text);
 

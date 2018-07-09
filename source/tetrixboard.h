@@ -16,6 +16,7 @@ class TetrixBoard : public QFrame
     Q_OBJECT
 
 public:
+    enum { BoardWidth = 10, BoardHeight = 22 };
     TetrixBoard(QWidget *parent = 0);
 
     void setNextPieceLabel(QLabel *label);
@@ -39,7 +40,7 @@ protected:
 
 //! [1]
 private:
-    enum { BoardWidth = 10, BoardHeight = 22 };
+
 
     TetrixShape &shapeAt(int x, int y) { return board[(y * BoardWidth) + x]; }
 

@@ -26,8 +26,10 @@ void TetrixBoard::setNextPieceLabel(QLabel *label)
 //! [2]
 QSize TetrixBoard::sizeHint() const
 {
-    return QSize(BoardWidth * 15 + frameWidth() * 2,
-                 BoardHeight * 15 + frameWidth() * 2);
+    QSize size=QSize(BoardWidth * 15 + frameWidth() * 2,
+                     BoardHeight * 15 + frameWidth() * 2);
+    //qDebug()<<"sizeHint:"<<size;
+    return size;
 }
 
 QSize TetrixBoard::minimumSizeHint() const
@@ -81,7 +83,7 @@ void TetrixBoard::pause()
 //! [7]
 void TetrixBoard::paintEvent(QPaintEvent *event)
 {
-    static int i=0;
+//    static int i=0;
     //qDebug()<<tr("paintEvent %1").arg(i++);
     QFrame::paintEvent(event);
 
@@ -89,10 +91,10 @@ void TetrixBoard::paintEvent(QPaintEvent *event)
     QRect rect = contentsRect();
 //! [7]
 
-    if (isPaused) {
-        painter.drawText(rect, Qt::AlignCenter, tr("Pause"));
-        return;
-    }
+//    if (isPaused) {
+//        painter.drawText(rect, Qt::AlignCenter, tr("Pause"));
+//        return;
+//    }
 
 //! [8]
     int boardTop = rect.bottom() - BoardHeight*squareHeight();
@@ -138,21 +140,35 @@ void TetrixBoard::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Left:
         tryMove(curPiece, curX - 1, curY);
         break;
+    case Qt::Key_A:
+        tryMove(curPiece, curX - 1, curY);
+        break;
+
     case Qt::Key_Right:
         tryMove(curPiece, curX + 1, curY);
         break;
+    case Qt::Key_D:
+        tryMove(curPiece, curX + 1, curY);
+        break;
+
     case Qt::Key_Down:
         tryMove(curPiece.rotatedRight(), curX, curY);
         break;
+    case Qt::Key_S:
+        oneLineDown();
+        break;
+
     case Qt::Key_Up:
         tryMove(curPiece.rotatedLeft(), curX, curY);
         break;
+    case Qt::Key_W:
+        tryMove(curPiece.rotatedLeft(), curX, curY);
+        break;
+
     case Qt::Key_Space:
         dropDown();
         break;
-    case Qt::Key_D:
-        oneLineDown();
-        break;
+
     default:
         QFrame::keyPressEvent(event);
     }
@@ -286,8 +302,6 @@ void TetrixBoard::removeFullLines()
 void TetrixBoard::newPiece()
 {
     curPiece = nextPiece;
-    nextPiece.setRandomShape();
-    showNextPiece();
     curX = BoardWidth / 2 -2;
     curY = -curPiece.minY();
     qDebug()<<curY;
@@ -296,7 +310,10 @@ void TetrixBoard::newPiece()
         curPiece.setShape(NoShape);
         timer.stop();
         isStarted = false;
+        return;
     }
+    nextPiece.setRandomShape();
+    showNextPiece();
 //! [30] //! [31]
 }
 //! [31]
@@ -332,7 +349,7 @@ bool TetrixBoard::tryMove(const TetrixPiece &newPiece, int newX, int newY)
         int x = newX + newPiece.x(i);
         int y = newY + newPiece.y(i);
         //qDebug()<<x<<y;
-        if (x < 0 || x >= BoardWidth /*|| y < 0 */|| y >= BoardHeight)
+        if (x < 0 || x >= BoardWidth || y < 0 || y >= BoardHeight)
             return false;
         if (shapeAt(x, y) != NoShape)
             return false;
