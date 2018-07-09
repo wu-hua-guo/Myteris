@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QLCDNumber>
 #include <QPushButton>
+#include "tetrixboard.h"
 //QT_BEGIN_NAMESPACE
 //class QLCDNumber;
 //class QLabel;
@@ -26,6 +27,7 @@ public:
 private:
     QLabel *createLabel(const QString &text);
 
+    TetrixBoard *board;
     QLabel *nextPieceLabel;
     QLCDNumber *scoreLcd;
     QLCDNumber *levelLcd;

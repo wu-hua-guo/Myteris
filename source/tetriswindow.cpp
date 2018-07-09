@@ -8,11 +8,13 @@ TetrisWindow::TetrisWindow(QWidget *parent)
     : QWidget(parent)
 {
 
-    TetrixBoard *board = new TetrixBoard();
+    board = new TetrixBoard;
+    //! [0]
 
     nextPieceLabel = new QLabel;
     nextPieceLabel->setFrameStyle(QFrame::Box | QFrame::Raised);
     nextPieceLabel->setAlignment(Qt::AlignCenter);
+    board->setNextPieceLabel(nextPieceLabel);
 
     // !init LCDNumber
     scoreLcd = new QLCDNumber(5);
@@ -32,6 +34,11 @@ TetrisWindow::TetrisWindow(QWidget *parent)
     connect(startButton,SIGNAL(clicked(bool)),board,SLOT(start()));
     connect(quitButton,SIGNAL(clicked(bool)),qApp,SLOT(quit()));
     connect(pauseButton,SIGNAL(clicked(bool)),board,SLOT(pause()));
+
+    connect(board, SIGNAL(scoreChanged(int)), scoreLcd, SLOT(display(int)));
+    connect(board, SIGNAL(levelChanged(int)), levelLcd, SLOT(display(int)));
+    connect(board, SIGNAL(linesRemovedChanged(int)),linesLcd, SLOT(display(int)));
+    //! [5]
 
     QGridLayout *layout= new QGridLayout;
     layout->addWidget(board,0,1,6,1);
