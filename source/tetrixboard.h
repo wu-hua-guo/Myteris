@@ -26,6 +26,7 @@ public:
 public slots:
     void start();
     void pause();
+    void isGrid();
 
 signals:
     void scoreChanged(int score);
@@ -56,6 +57,7 @@ private:
     void showNextPiece();
     bool tryMove(const TetrixPiece &newPiece, int newX, int newY);
     void drawSquare(QPainter &painter, int x, int y, TetrixShape shape);
+    void drawBoardGrid(QPainter &painter,QRect &rect);
 
     QBasicTimer timer;
     QPointer<QLabel> nextPieceLabel;
@@ -70,6 +72,7 @@ private:
     int numPiecesDropped;
     int score;
     int level;
+    bool grid;
     TetrixShape board[BoardWidth * BoardHeight];
 };
 #endif // TETRIXBOARD_H

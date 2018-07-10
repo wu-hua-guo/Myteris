@@ -31,10 +31,16 @@ TetrisWindow::TetrisWindow(QWidget *parent)
     quitButton->setFocusPolicy(Qt::NoFocus);
     pauseButton = new QPushButton(tr("&暂停"));
     pauseButton->setFocusPolicy(Qt::NoFocus);
+    // !1 add grid
+    isGridButton = new QPushButton(tr("&网格"));
+    isGridButton->setFocusPolicy(Qt::NoFocus);
+
 
     connect(startButton,SIGNAL(clicked(bool)),board,SLOT(start()));
     connect(quitButton,SIGNAL(clicked(bool)),qApp,SLOT(quit()));
     connect(pauseButton,SIGNAL(clicked(bool)),board,SLOT(pause()));
+    // !1
+    connect(isGridButton,SIGNAL(clicked(bool)),board,SLOT(isGrid()));
 
     connect(board, SIGNAL(scoreChanged(int)), scoreLcd, SLOT(display(int)));
     connect(board, SIGNAL(levelChanged(int)), levelLcd, SLOT(display(int)));
@@ -58,6 +64,7 @@ TetrisWindow::TetrisWindow(QWidget *parent)
     layout->addWidget(linesLcd,3,2);
     // ! add button
     layout->addWidget(startButton,4,0);
+    layout->addWidget(isGridButton,5,0);
     layout->addWidget(quitButton,4,2);
     layout->addWidget(pauseButton,5,2);
 

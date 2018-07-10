@@ -10,6 +10,7 @@ TetrixBoard::TetrixBoard(QWidget *parent)
     setFocusPolicy(Qt::StrongFocus);
     isStarted = false;
     isPaused = false;
+    grid = false;
     clearBoard();
 
     nextPiece.setRandomShape();
@@ -76,7 +77,13 @@ void TetrixBoard::pause()
         timer.start(timeoutTime(), this);
     }
     update();
-//! [5] //! [6]
+    //! [5] //! [6]
+}
+
+void TetrixBoard::isGrid()
+{
+    grid = !grid;
+    update();
 }
 //! [6]
 
@@ -108,6 +115,7 @@ void TetrixBoard::paintEvent(QPaintEvent *event)
         }
 //! [8] //! [9]
     }
+
 //! [9]
 
 //! [10]
@@ -121,8 +129,15 @@ void TetrixBoard::paintEvent(QPaintEvent *event)
         }
 //! [10] //! [11]
     }
+    if(grid)
+    {
+        drawBoardGrid(painter,rect);
+    }
 //! [11] //! [12]
 }
+
+
+
 //! [12]
 
 //! [13]
@@ -390,5 +405,21 @@ void TetrixBoard::drawSquare(QPainter &painter, int x, int y, TetrixShape shape)
     painter.drawLine(x + squareWidth() - 1, y + squareHeight() - 1,
                      x + squareWidth() - 1, y + 1);
     // !1
+}
+//
+void TetrixBoard::drawBoardGrid(QPainter &painter, QRect &rect)
+{
+    static QColor color=QColor(100,100,100).light();
+    int boardTop = rect.bottom() - BoardHeight*squareHeight();
+    painter.setPen(color);
+    for(int x=0;x<=BoardWidth;++x)
+    {
+        painter.drawLine(rect.left()+x*squareHeight(), rect.top(),
+                         rect.left()+x*squareHeight(), rect.height());
+    }
+    for (int y = 0; y <= BoardHeight; ++y) {
+        painter.drawLine(rect.left(), boardTop + y * squareHeight(),
+                         rect.right(), boardTop + y * squareHeight());
+    }
 }
 //! [36]

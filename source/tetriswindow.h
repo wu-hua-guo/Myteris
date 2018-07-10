@@ -37,6 +37,7 @@ private:
     QPushButton *startButton;
     QPushButton *quitButton;
     QPushButton *pauseButton;
+    QPushButton *isGridButton;
 
 };
 
